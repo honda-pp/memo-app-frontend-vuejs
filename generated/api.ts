@@ -75,7 +75,7 @@ export interface MemoAppUser {
 export const UsersMemoAppApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Returns a single user
+         * Returns a single user.
          * @summary Find user by ID
          * @param {number} id ID of user to return
          * @param {*} [options] Override http request option.
@@ -149,7 +149,7 @@ export const UsersMemoAppApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UsersMemoAppApiAxiosParamCreator(configuration)
     return {
         /**
-         * Returns a single user
+         * Returns a single user.
          * @summary Find user by ID
          * @param {number} id ID of user to return
          * @param {*} [options] Override http request option.
@@ -184,7 +184,7 @@ export const UsersMemoAppApiFactory = function (configuration?: Configuration, b
     const localVarFp = UsersMemoAppApiFp(configuration)
     return {
         /**
-         * Returns a single user
+         * Returns a single user.
          * @summary Find user by ID
          * @param {number} id ID of user to return
          * @param {*} [options] Override http request option.
@@ -213,7 +213,7 @@ export const UsersMemoAppApiFactory = function (configuration?: Configuration, b
  */
 export class UsersMemoAppApi extends BaseAPI {
     /**
-     * Returns a single user
+     * Returns a single user.
      * @summary Find user by ID
      * @param {number} id ID of user to return
      * @param {*} [options] Override http request option.
