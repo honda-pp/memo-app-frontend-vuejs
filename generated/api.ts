@@ -106,6 +106,42 @@ export interface User {
 export const MemoHandlerAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Creates a new memo.
+         * @summary Create a new memo
+         * @param {Memo} memo Memo object that needs to be added
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createMemo: async (memo: Memo, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'memo' is not null or undefined
+            assertParamExists('createMemo', 'memo', memo)
+            const localVarPath = `/memo`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(memo, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Delete a single memo.
          * @summary Delete memo by ID
          * @param {number} id ID of memo to delete
@@ -203,6 +239,46 @@ export const MemoHandlerAxiosParamCreator = function (configuration?: Configurat
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Update an existing memo.
+         * @summary Update an existing memo
+         * @param {number} id ID of memo to update
+         * @param {Memo} memo Memo object that needs to be updated
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateMemo: async (id: number, memo: Memo, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('updateMemo', 'id', id)
+            // verify required parameter 'memo' is not null or undefined
+            assertParamExists('updateMemo', 'memo', memo)
+            const localVarPath = `/memo/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(memo, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -213,6 +289,19 @@ export const MemoHandlerAxiosParamCreator = function (configuration?: Configurat
 export const MemoHandlerFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = MemoHandlerAxiosParamCreator(configuration)
     return {
+        /**
+         * Creates a new memo.
+         * @summary Create a new memo
+         * @param {Memo} memo Memo object that needs to be added
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createMemo(memo: Memo, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Memo>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createMemo(memo, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MemoHandler.createMemo']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
         /**
          * Delete a single memo.
          * @summary Delete memo by ID
@@ -251,6 +340,20 @@ export const MemoHandlerFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['MemoHandler.getMemoList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * Update an existing memo.
+         * @summary Update an existing memo
+         * @param {number} id ID of memo to update
+         * @param {Memo} memo Memo object that needs to be updated
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateMemo(id: number, memo: Memo, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Memo>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateMemo(id, memo, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MemoHandler.updateMemo']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -261,6 +364,16 @@ export const MemoHandlerFp = function(configuration?: Configuration) {
 export const MemoHandlerFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = MemoHandlerFp(configuration)
     return {
+        /**
+         * Creates a new memo.
+         * @summary Create a new memo
+         * @param {Memo} memo Memo object that needs to be added
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createMemo(memo: Memo, options?: any): AxiosPromise<Memo> {
+            return localVarFp.createMemo(memo, options).then((request) => request(axios, basePath));
+        },
         /**
          * Delete a single memo.
          * @summary Delete memo by ID
@@ -290,6 +403,17 @@ export const MemoHandlerFactory = function (configuration?: Configuration, baseP
         getMemoList(options?: any): AxiosPromise<Array<Memo>> {
             return localVarFp.getMemoList(options).then((request) => request(axios, basePath));
         },
+        /**
+         * Update an existing memo.
+         * @summary Update an existing memo
+         * @param {number} id ID of memo to update
+         * @param {Memo} memo Memo object that needs to be updated
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateMemo(id: number, memo: Memo, options?: any): AxiosPromise<Memo> {
+            return localVarFp.updateMemo(id, memo, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -300,6 +424,18 @@ export const MemoHandlerFactory = function (configuration?: Configuration, baseP
  * @extends {BaseAPI}
  */
 export class MemoHandler extends BaseAPI {
+    /**
+     * Creates a new memo.
+     * @summary Create a new memo
+     * @param {Memo} memo Memo object that needs to be added
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemoHandler
+     */
+    public createMemo(memo: Memo, options?: RawAxiosRequestConfig) {
+        return MemoHandlerFp(this.configuration).createMemo(memo, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Delete a single memo.
      * @summary Delete memo by ID
@@ -333,6 +469,19 @@ export class MemoHandler extends BaseAPI {
      */
     public getMemoList(options?: RawAxiosRequestConfig) {
         return MemoHandlerFp(this.configuration).getMemoList(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Update an existing memo.
+     * @summary Update an existing memo
+     * @param {number} id ID of memo to update
+     * @param {Memo} memo Memo object that needs to be updated
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemoHandler
+     */
+    public updateMemo(id: number, memo: Memo, options?: RawAxiosRequestConfig) {
+        return MemoHandlerFp(this.configuration).updateMemo(id, memo, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -419,7 +568,7 @@ export const UsersHandlerAxiosParamCreator = function (configuration?: Configura
          * @throws {RequiredError}
          */
         getUsers: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/users`;
+            const localVarPath = `/user-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
