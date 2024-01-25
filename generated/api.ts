@@ -26,54 +26,358 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
- * @interface MemoAppError
+ * @interface Memo
  */
-export interface MemoAppError {
+export interface Memo {
+    /**
+     * 
+     * @type {number}
+     * @memberof Memo
+     */
+    'id': number;
     /**
      * 
      * @type {string}
-     * @memberof MemoAppError
+     * @memberof Memo
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Memo
+     */
+    'content': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Memo
+     */
+    'user_id': number;
+}
+/**
+ * 
+ * @export
+ * @interface ModelError
+ */
+export interface ModelError {
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelError
      */
     'message': string;
     /**
      * 
      * @type {number}
-     * @memberof MemoAppError
+     * @memberof ModelError
      */
     'code': number;
     /**
      * 
      * @type {object}
-     * @memberof MemoAppError
+     * @memberof ModelError
      */
     'data'?: object;
 }
 /**
  * 
  * @export
- * @interface MemoAppUser
+ * @interface User
  */
-export interface MemoAppUser {
+export interface User {
     /**
      * 
      * @type {number}
-     * @memberof MemoAppUser
+     * @memberof User
      */
     'id': number;
     /**
      * 
      * @type {string}
-     * @memberof MemoAppUser
+     * @memberof User
      */
     'name': string;
 }
 
 /**
- * UsersMemoAppApi - axios parameter creator
+ * MemoHandler - axios parameter creator
  * @export
  */
-export const UsersMemoAppApiAxiosParamCreator = function (configuration?: Configuration) {
+export const MemoHandlerAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * Delete a single memo.
+         * @summary Delete memo by ID
+         * @param {number} id ID of memo to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteMemoById: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteMemoById', 'id', id)
+            const localVarPath = `/memo/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns a single memo.
+         * @summary Find memo by ID
+         * @param {number} id ID of memo to return
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMemoById: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getMemoById', 'id', id)
+            const localVarPath = `/memo/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Optional extended description in Markdown.
+         * @summary Returns a list of memos.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMemoList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/memo-list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * MemoHandler - functional programming interface
+ * @export
+ */
+export const MemoHandlerFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = MemoHandlerAxiosParamCreator(configuration)
+    return {
+        /**
+         * Delete a single memo.
+         * @summary Delete memo by ID
+         * @param {number} id ID of memo to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteMemoById(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Memo>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMemoById(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MemoHandler.deleteMemoById']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Returns a single memo.
+         * @summary Find memo by ID
+         * @param {number} id ID of memo to return
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMemoById(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Memo>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMemoById(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MemoHandler.getMemoById']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Optional extended description in Markdown.
+         * @summary Returns a list of memos.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMemoList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Memo>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMemoList(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['MemoHandler.getMemoList']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * MemoHandler - factory interface
+ * @export
+ */
+export const MemoHandlerFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = MemoHandlerFp(configuration)
+    return {
+        /**
+         * Delete a single memo.
+         * @summary Delete memo by ID
+         * @param {number} id ID of memo to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteMemoById(id: number, options?: any): AxiosPromise<Memo> {
+            return localVarFp.deleteMemoById(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns a single memo.
+         * @summary Find memo by ID
+         * @param {number} id ID of memo to return
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMemoById(id: number, options?: any): AxiosPromise<Memo> {
+            return localVarFp.getMemoById(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Optional extended description in Markdown.
+         * @summary Returns a list of memos.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMemoList(options?: any): AxiosPromise<Array<Memo>> {
+            return localVarFp.getMemoList(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * MemoHandler - object-oriented interface
+ * @export
+ * @class MemoHandler
+ * @extends {BaseAPI}
+ */
+export class MemoHandler extends BaseAPI {
+    /**
+     * Delete a single memo.
+     * @summary Delete memo by ID
+     * @param {number} id ID of memo to delete
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemoHandler
+     */
+    public deleteMemoById(id: number, options?: RawAxiosRequestConfig) {
+        return MemoHandlerFp(this.configuration).deleteMemoById(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns a single memo.
+     * @summary Find memo by ID
+     * @param {number} id ID of memo to return
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemoHandler
+     */
+    public getMemoById(id: number, options?: RawAxiosRequestConfig) {
+        return MemoHandlerFp(this.configuration).getMemoById(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Optional extended description in Markdown.
+     * @summary Returns a list of memos.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemoHandler
+     */
+    public getMemoList(options?: RawAxiosRequestConfig) {
+        return MemoHandlerFp(this.configuration).getMemoList(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * UsersHandler - axios parameter creator
+ * @export
+ */
+export const UsersHandlerAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Delete a single user.
+         * @summary Delete user by ID
+         * @param {number} id ID of user to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteUserById: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteUserById', 'id', id)
+            const localVarPath = `/user/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * Returns a single user.
          * @summary Find user by ID
@@ -142,12 +446,25 @@ export const UsersMemoAppApiAxiosParamCreator = function (configuration?: Config
 };
 
 /**
- * UsersMemoAppApi - functional programming interface
+ * UsersHandler - functional programming interface
  * @export
  */
-export const UsersMemoAppApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = UsersMemoAppApiAxiosParamCreator(configuration)
+export const UsersHandlerFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = UsersHandlerAxiosParamCreator(configuration)
     return {
+        /**
+         * Delete a single user.
+         * @summary Delete user by ID
+         * @param {number} id ID of user to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteUserById(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteUserById(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UsersHandler.deleteUserById']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
         /**
          * Returns a single user.
          * @summary Find user by ID
@@ -155,10 +472,10 @@ export const UsersMemoAppApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUserById(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemoAppUser>> {
+        async getUserById(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getUserById(id, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UsersMemoAppApi.getUserById']?.[index]?.url;
+            const operationBasePath = operationServerMap['UsersHandler.getUserById']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -167,22 +484,32 @@ export const UsersMemoAppApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUsers(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MemoAppUser>>> {
+        async getUsers(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<User>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getUsers(options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UsersMemoAppApi.getUsers']?.[index]?.url;
+            const operationBasePath = operationServerMap['UsersHandler.getUsers']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
 
 /**
- * UsersMemoAppApi - factory interface
+ * UsersHandler - factory interface
  * @export
  */
-export const UsersMemoAppApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = UsersMemoAppApiFp(configuration)
+export const UsersHandlerFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = UsersHandlerFp(configuration)
     return {
+        /**
+         * Delete a single user.
+         * @summary Delete user by ID
+         * @param {number} id ID of user to delete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteUserById(id: number, options?: any): AxiosPromise<User> {
+            return localVarFp.deleteUserById(id, options).then((request) => request(axios, basePath));
+        },
         /**
          * Returns a single user.
          * @summary Find user by ID
@@ -190,7 +517,7 @@ export const UsersMemoAppApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserById(id: number, options?: any): AxiosPromise<MemoAppUser> {
+        getUserById(id: number, options?: any): AxiosPromise<User> {
             return localVarFp.getUserById(id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -199,29 +526,41 @@ export const UsersMemoAppApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUsers(options?: any): AxiosPromise<Array<MemoAppUser>> {
+        getUsers(options?: any): AxiosPromise<Array<User>> {
             return localVarFp.getUsers(options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * UsersMemoAppApi - object-oriented interface
+ * UsersHandler - object-oriented interface
  * @export
- * @class UsersMemoAppApi
+ * @class UsersHandler
  * @extends {BaseAPI}
  */
-export class UsersMemoAppApi extends BaseAPI {
+export class UsersHandler extends BaseAPI {
+    /**
+     * Delete a single user.
+     * @summary Delete user by ID
+     * @param {number} id ID of user to delete
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersHandler
+     */
+    public deleteUserById(id: number, options?: RawAxiosRequestConfig) {
+        return UsersHandlerFp(this.configuration).deleteUserById(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Returns a single user.
      * @summary Find user by ID
      * @param {number} id ID of user to return
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UsersMemoAppApi
+     * @memberof UsersHandler
      */
     public getUserById(id: number, options?: RawAxiosRequestConfig) {
-        return UsersMemoAppApiFp(this.configuration).getUserById(id, options).then((request) => request(this.axios, this.basePath));
+        return UsersHandlerFp(this.configuration).getUserById(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -229,10 +568,10 @@ export class UsersMemoAppApi extends BaseAPI {
      * @summary Returns a list of users.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof UsersMemoAppApi
+     * @memberof UsersHandler
      */
     public getUsers(options?: RawAxiosRequestConfig) {
-        return UsersMemoAppApiFp(this.configuration).getUsers(options).then((request) => request(this.axios, this.basePath));
+        return UsersHandlerFp(this.configuration).getUsers(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
