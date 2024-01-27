@@ -567,7 +567,7 @@ export const UsersHandlerAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUsers: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getUserList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/user-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -633,10 +633,10 @@ export const UsersHandlerFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUsers(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<User>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getUsers(options);
+        async getUserList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<User>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserList(options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UsersHandler.getUsers']?.[index]?.url;
+            const operationBasePath = operationServerMap['UsersHandler.getUserList']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -675,8 +675,8 @@ export const UsersHandlerFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUsers(options?: any): AxiosPromise<Array<User>> {
-            return localVarFp.getUsers(options).then((request) => request(axios, basePath));
+        getUserList(options?: any): AxiosPromise<Array<User>> {
+            return localVarFp.getUserList(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -719,8 +719,8 @@ export class UsersHandler extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UsersHandler
      */
-    public getUsers(options?: RawAxiosRequestConfig) {
-        return UsersHandlerFp(this.configuration).getUsers(options).then((request) => request(this.axios, this.basePath));
+    public getUserList(options?: RawAxiosRequestConfig) {
+        return UsersHandlerFp(this.configuration).getUserList(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
