@@ -1,8 +1,8 @@
 <template>
-  <div @click="isPopupOpen = true" class="popup-title">{{ contentTitle }}</div>
-  <div v-if="isPopupOpen" class="popup-overlay" @click="isPopupOpen = false">
+  <div @click="openPopup" class="popup-title">{{ contentTitle }}</div>
+  <div v-if="isPopupOpen" class="popup-overlay" @click="closePopup">
     <div class="popup-content" @click.stop>
-      <button @click="isPopupOpen = false" class="close-button">&times;</button>
+      <button @click="closePopup" class="close-button">&times;</button>
       <slot></slot>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     </div>
@@ -15,9 +15,21 @@ import { ref, defineProps, toRefs, onMounted, onUnmounted } from 'vue';
 const isPopupOpen = ref(false);
 const props = defineProps({
   contentTitle: String,
-  errorMessage: String
+  errorMessage: String,
+  onPopupOpen: Function,
+  onPopupClose: Function
 });
-const { contentTitle, errorMessage } = toRefs(props);
+const { contentTitle, errorMessage, onPopupOpen, onPopupClose } = toRefs(props);
+
+function openPopup() {
+  isPopupOpen.value = true;
+  onPopupOpen?.value && onPopupOpen.value();
+}
+
+function closePopup() {
+  isPopupOpen.value = false;
+  onPopupClose?.value && onPopupClose.value();
+}
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown);
@@ -29,7 +41,7 @@ onUnmounted(() => {
 
 function handleKeydown(event: { key: string; }) {
   if (event.key === 'Escape') {
-    isPopupOpen.value = false;
+    closePopup();
   }
 }
 </script>

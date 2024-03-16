@@ -1,9 +1,9 @@
 <template>
-  <Popup :contentTitle="memoData ? memoData.title : ''">
+  <Popup :contentTitle="memo?.title" :onPopupOpen="onPopupOpen" :errorMessage="errorMessage">
     <div class="memo-editor">
       <div class="memo-edit-content">
         <h2>Edit Memo</h2>
-        <p>{{ memoData ? memoData.content : '' }}</p>
+        <p>{{ memo?.content }}</p>
         <button @click="saveMemo">Save</button>
       </div>
     </div>
@@ -11,24 +11,38 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, toRefs } from 'vue';
-import { Memo } from '@/generated';
-//import { memoHandler } from '@/api/handler';
+import { ref, defineProps, toRefs, onMounted } from 'vue';
+import { Memo, MemoListInner } from '@/generated';
+import { memoHandler } from '@/api/handler';
 import Popup from './Popup.vue';
 
-//const errorMessage = ref('');
+const errorMessage = ref('');
 
 const props = defineProps({
-  memoData: {
-    type: Object as () => Memo
+  memoListInner: {
+    type: Object as () => MemoListInner
   }
 });
-const { memoData } = toRefs(props);
+const { memoListInner } = toRefs(props);
 
+const memo = ref({} as Memo);
+
+onMounted(() => {
+  memo.value = memoListInner?.value ? { ...memoListInner.value, content: '', user_id: 0 } : {} as Memo;
+});
+
+const onPopupOpen = async () => {
+  try {
+    const response = await memoHandler.getMemoById(memo?.value?.id ?? 0);
+    memo.value = response.data;
+  } catch (error) {
+    errorMessage.value = error as string;
+  }
+};
 
 const saveMemo = async () => {
   try {
-    //await memoHandler.updateMemo(memoData.value.id, memoContent.value);
+    //await memoHandler.updateMemo(memo.value.id, memoContent.value);
     close();
   } catch (error) {
     console.error(error);

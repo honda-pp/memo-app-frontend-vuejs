@@ -1,8 +1,8 @@
 <template>
-  <Popup :contentTitle="userData ? userData.name : ''">
+  <Popup :contentTitle="user?.name" :errorMessage="errorMessage">
     <div class="user-info">
       <h2>User Info</h2>
-      <p>Name: {{ userData ? userData.name : '' }}</p>
+      <p>Name: {{ user?.name }}</p>
     </div>
   </Popup>
 </template>
@@ -20,5 +20,7 @@ const props = defineProps({
   }
 });
 const { userData } = toRefs(props);
+
+const user = userData?.value;
 
 </script>
