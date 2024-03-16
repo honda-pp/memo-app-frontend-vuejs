@@ -57,6 +57,25 @@ export interface Memo {
 /**
  * 
  * @export
+ * @interface MemoListInner
+ */
+export interface MemoListInner {
+    /**
+     * 
+     * @type {number}
+     * @memberof MemoListInner
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemoListInner
+     */
+    'title': string;
+}
+/**
+ * 
+ * @export
  * @interface ModelError
  */
 export interface ModelError {
@@ -334,7 +353,7 @@ export const MemoHandlerFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMemoList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Memo>>> {
+        async getMemoList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MemoListInner>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMemoList(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MemoHandler.getMemoList']?.[localVarOperationServerIndex]?.url;
@@ -400,7 +419,7 @@ export const MemoHandlerFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMemoList(options?: any): AxiosPromise<Array<Memo>> {
+        getMemoList(options?: any): AxiosPromise<Array<MemoListInner>> {
             return localVarFp.getMemoList(options).then((request) => request(axios, basePath));
         },
         /**
