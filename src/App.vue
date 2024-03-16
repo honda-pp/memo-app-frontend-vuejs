@@ -30,6 +30,11 @@ h1 {
   margin-bottom: 20px;
 }
 
+p {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
 li {
   font-size: 1.2rem;
   margin-bottom: 10px;
@@ -50,6 +55,35 @@ main {
   margin: 0 auto;
   margin-bottom: 40px;
   padding: 10px;
+}
+
+footer {
+  background-color: #f2f2f2;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+}
+
+button {
+  padding: 10px 10px;
+  margin: 0 10px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  color: red;
 }
 
 </style>
