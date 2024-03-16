@@ -1,5 +1,5 @@
 <template>
-  <Popup :buttonTitle="userData ? userData.name : ''">
+  <Popup :contentTitle="userData ? userData.name : ''">
     <div class="user-info">
       <h2>User Info</h2>
       <p>Name: {{ userData ? userData.name : '' }}</p>

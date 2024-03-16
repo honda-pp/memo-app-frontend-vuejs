@@ -1,5 +1,5 @@
 <template>
-  <Popup :buttonTitle="memoData ? memoData.title : ''">
+  <Popup :contentTitle="memoData ? memoData.title : ''">
     <div class="memo-editor">
       <div class="memo-edit-content">
         <h2>Edit Memo</h2>

@@ -1,5 +1,5 @@
 <template>
-  <div @click="isPopupOpen = true" class="popup-text">{{ buttonTitle }}</div>
+  <div @click="isPopupOpen = true" class="popup-title">{{ contentTitle }}</div>
   <div v-if="isPopupOpen" class="popup-overlay" @click="isPopupOpen = false">
     <div class="popup-content" @click.stop>
       <button @click="isPopupOpen = false" class="close-button">&times;</button>
@@ -14,10 +14,10 @@ import { ref, defineProps, toRefs, onMounted, onUnmounted } from 'vue';
 
 const isPopupOpen = ref(false);
 const props = defineProps({
-  buttonTitle: String,
+  contentTitle: String,
   errorMessage: String
 });
-const { buttonTitle, errorMessage } = toRefs(props);
+const { contentTitle, errorMessage } = toRefs(props);
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown);
@@ -53,6 +53,13 @@ function handleKeydown(event: { key: string; }) {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
+}
+
+.popup-title {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 5px;
 }
 
 .close-button {
