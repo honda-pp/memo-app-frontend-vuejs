@@ -3,7 +3,7 @@
     <div class="memo-editor">
       <div class="memo-edit-content">
         <h2>Edit Memo</h2>
-        <p>{{ memo?.content }}</p>
+        <textarea v-model="memo.content" rows="5"/>
         <button @click="saveMemo">Save</button>
       </div>
     </div>
@@ -42,17 +42,11 @@ const onPopupOpen = async () => {
 
 const saveMemo = async () => {
   try {
-    //await memoHandler.updateMemo(memo.value.id, memoContent.value);
-    close();
+    await memoHandler.updateMemo(memo?.value.id, memo?.value);
   } catch (error) {
     console.error(error);
   }
 };
-
-const close = () => {
-  // Close the memo editor
-};
-
 
 </script>
 
@@ -63,5 +57,12 @@ const close = () => {
 
 .memo-edit-content {
   /* Add your styles for the popup content here */
+}
+
+textarea {
+  height: 100%;
+  min-width: 50vw;
+  width: 100%;
+  font-size: 1.2rem;
 }
 </style>
