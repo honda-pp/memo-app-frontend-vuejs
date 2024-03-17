@@ -2,12 +2,12 @@
   <Popup :contentTitle="memo?.title" :onPopupOpen="onPopupOpen" :errorMessage="errorMessage">
     <div class="memo-editor">
       <div class="memo-edit-content">
-        <h2>Edit Memo</h2>
-        <textarea v-model="memo.content" rows="5"/>
+        <textarea v-model="memo.title" />
+        <textarea v-model="memo.content" rows="5" />
         <button @click="saveMemo">Save</button>
       </div>
     </div>
-</Popup>
+  </Popup>
 </template>
 
 <script setup lang="ts">
