@@ -1,5 +1,6 @@
 <template>
   <h1>memo list</h1>
+  <MemoEditor />
   <ul>
     <li v-for="memo in memoList" :key="memo.id">
       <MemoEditor :memoListInner="memo" />
@@ -30,6 +31,6 @@ const getMemoList = async () => {
   } catch (error) {
     console.error(error);
   }
-  
 };
+
 </script>

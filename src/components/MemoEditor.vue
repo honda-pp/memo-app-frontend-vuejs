@@ -1,5 +1,5 @@
 <template>
-  <Popup :contentTitle="memo?.title" :onPopupOpen="onPopupOpen" :errorMessage="errorMessage">
+  <Popup :contentTitle="contentTitle" :onPopupOpen="onPopupOpen" :errorMessage="errorMessage">
     <div class="memo-editor">
       <div class="memo-edit-content">
         <textarea v-model="memo.title" />
@@ -17,6 +17,7 @@ import { memoHandler } from '@/api/handler';
 import Popup from './Popup.vue';
 
 const errorMessage = ref('');
+const contentTitle = ref('');
 
 const props = defineProps({
   memoListInner: {
@@ -28,12 +29,21 @@ const { memoListInner } = toRefs(props);
 const memo = ref({} as Memo);
 
 onMounted(() => {
-  memo.value = memoListInner?.value ? { ...memoListInner.value, content: '', user_id: 0 } : {} as Memo;
+  if (!memoListInner?.value) {
+    contentTitle.value = "Create Memo";
+    memo.value = { id: -1, title: 'New Memo', content: '', user_id: 1 };
+    return;
+  }
+  memo.value = { ...memoListInner.value, content: '', user_id: 0 };
+  contentTitle.value = memo.value.title;
 });
 
 const onPopupOpen = async () => {
   try {
-    const response = await memoHandler.getMemoById(memo?.value?.id ?? 0);
+    if (memo.value.id === -1) {
+      return;
+    }
+    const response = await memoHandler.getMemoById(memo.value.id);
     memo.value = response.data;
   } catch (error) {
     errorMessage.value = error as string;
@@ -42,7 +52,11 @@ const onPopupOpen = async () => {
 
 const saveMemo = async () => {
   try {
-    await memoHandler.updateMemo(memo?.value.id, memo?.value);
+    if (memo.value.id === -1) {
+      await memoHandler.createMemo(memo.value);
+      return;
+    }
+    await memoHandler.updateMemo(memo?.value.id, memo.value);
   } catch (error) {
     console.error(error);
   }
