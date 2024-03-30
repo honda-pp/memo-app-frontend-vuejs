@@ -1,5 +1,10 @@
 <template>
-  <Popup :contentTitle="contentTitle" :buttonFlg="!memoListInner" :onPopupOpen="onPopupOpen" :errorMessage="errorMessage">
+  <Popup 
+    :contentTitle="contentTitle" 
+    :buttonFlg="!memoListInner" 
+    :onPopupOpen="onPopupOpen" 
+    :errorMessage="errorMessage"
+    ref="popup">
     <div class="memo-editor">
       <div class="memo-edit-content">
         <textarea v-model="memo.title" />
@@ -18,6 +23,7 @@ import Popup from './Popup.vue';
 
 const errorMessage = ref('');
 const contentTitle = ref('');
+const popup = ref<null | { closePopup: () => null }>(null);
 
 const props = defineProps({
   memoListInner: {
@@ -54,9 +60,10 @@ const saveMemo = async () => {
   try {
     if (memo.value.id === -1) {
       await memoHandler.createMemo(memo.value);
-      return;
+    } else {
+      await memoHandler.updateMemo(memo?.value.id, memo.value);
     }
-    await memoHandler.updateMemo(memo?.value.id, memo.value);
+    popup.value?.closePopup();
   } catch (error) {
     console.error(error);
   }

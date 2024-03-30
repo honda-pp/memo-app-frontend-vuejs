@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, toRefs, onMounted, onUnmounted } from 'vue';
+import { ref, defineProps, toRefs, onMounted, onUnmounted, defineExpose } from 'vue';
 
 const isPopupOpen = ref(false);
 const props = defineProps({
@@ -45,6 +45,11 @@ function handleKeydown(event: { key: string; }) {
     closePopup();
   }
 }
+
+defineExpose({
+  openPopup,
+  closePopup
+});
 </script>
 
 <style scoped>
