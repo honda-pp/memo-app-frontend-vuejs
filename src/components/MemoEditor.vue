@@ -1,5 +1,5 @@
 <template>
-  <Popup :contentTitle="contentTitle" :onPopupOpen="onPopupOpen" :errorMessage="errorMessage">
+  <Popup :contentTitle="contentTitle" :createPopupFlg="createPopupFlg" :onPopupOpen="onPopupOpen" :errorMessage="errorMessage">
     <div class="memo-editor">
       <div class="memo-edit-content">
         <textarea v-model="memo.title" />
@@ -18,6 +18,7 @@ import Popup from './Popup.vue';
 
 const errorMessage = ref('');
 const contentTitle = ref('');
+const createPopupFlg = ref(false);
 
 const props = defineProps({
   memoListInner: {
@@ -30,6 +31,7 @@ const memo = ref({} as Memo);
 
 onMounted(() => {
   if (!memoListInner?.value) {
+    createPopupFlg.value = true;
     contentTitle.value = "Create Memo";
     memo.value = { id: -1, title: 'New Memo', content: '', user_id: 1 };
     return;
