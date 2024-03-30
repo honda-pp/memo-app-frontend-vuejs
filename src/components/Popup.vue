@@ -14,22 +14,34 @@ import { ref, defineProps, toRefs, onMounted, onUnmounted, defineExpose } from '
 
 const isPopupOpen = ref(false);
 const props = defineProps({
-  contentTitle: String,
-  buttonFlg: Boolean,
-  errorMessage: String,
-  onPopupOpen: Function,
-  onPopupClose: Function
+  contentTitle: {
+    type: String
+  },
+  buttonFlg: {
+    type: Boolean
+  },
+  errorMessage: {
+    type: String
+  },
+  onPopupOpen: {
+    type: Function,
+    default: null
+  },
+  onPopupClose: {
+    type: Function,
+    default: null
+  }
 });
 const { contentTitle, buttonFlg, errorMessage, onPopupOpen, onPopupClose } = toRefs(props);
 
-function openPopup() {
+const openPopup = () => {
   isPopupOpen.value = true;
-  onPopupOpen?.value && onPopupOpen.value();
+  onPopupOpen.value();
 }
 
-function closePopup() {
+const closePopup = () => {
   isPopupOpen.value = false;
-  onPopupClose?.value && onPopupClose.value();
+  onPopupClose.value();
 }
 
 onMounted(() => {
@@ -40,7 +52,7 @@ onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown);
 });
 
-function handleKeydown(event: { key: string; }) {
+const handleKeydown = (event: { key: string; }) => {
   if (event.key === 'Escape') {
     closePopup();
   }

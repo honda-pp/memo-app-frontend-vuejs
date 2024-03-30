@@ -1,9 +1,9 @@
 <template>
   <h1>memo list</h1>
-  <MemoEditor />
+  <MemoEditor :updateList="updateMemoList"/>
   <ul>
     <li v-for="memo in memoList" :key="memo.id">
-      <MemoEditor :memoListInner="memo" />
+      <MemoEditor :memoListInner="memo" :updateList="updateMemoList"/>
     </li>
   </ul>
 </template>
@@ -32,5 +32,14 @@ const getMemoList = async () => {
     console.error(error);
   }
 };
+
+const updateMemoList = (memo: MemoListInner) => {
+  const index = memoList.value.findIndex((m) => m.id === memo.id);
+  if (index === -1) {
+    memoList.value.unshift(memo);
+  } else {
+    memoList.value[index] = memo;
+  }
+}
 
 </script>

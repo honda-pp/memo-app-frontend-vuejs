@@ -28,21 +28,29 @@ const popup = ref<null | { closePopup: () => null }>(null);
 const props = defineProps({
   memoListInner: {
     type: Object as () => MemoListInner
+  },
+  updateList: {
+    type: Function,
+    default: null
   }
 });
-const { memoListInner } = toRefs(props);
+const { memoListInner, updateList } = toRefs(props);
 
 const memo = ref({} as Memo);
 
 onMounted(() => {
   if (!memoListInner?.value) {
-    contentTitle.value = "Create Memo";
-    memo.value = { id: -1, title: 'New Memo', content: '', user_id: 1 };
-    return;
+    setCreateMemo();
+  } else {
+    memo.value = { ...memoListInner.value, content: '', user_id: 0 };
+    contentTitle.value = memo.value.title;
   }
-  memo.value = { ...memoListInner.value, content: '', user_id: 0 };
-  contentTitle.value = memo.value.title;
 });
+
+const setCreateMemo = () => {
+  memo.value = { id: -1, title: 'New Memo', content: '', user_id: 1 };
+  contentTitle.value = memo.value.title;
+};
 
 const onPopupOpen = async () => {
   try {
@@ -59,9 +67,13 @@ const onPopupOpen = async () => {
 const saveMemo = async () => {
   try {
     if (memo.value.id === -1) {
-      await memoHandler.createMemo(memo.value);
+      const response = await memoHandler.createMemo(memo.value);
+      updateList.value(response.data);
+      setCreateMemo();
     } else {
       await memoHandler.updateMemo(memo?.value.id, memo.value);
+      contentTitle.value = memo.value.title;
+      updateList.value(memo.value);
     }
     popup.value?.closePopup();
   } catch (error) {
