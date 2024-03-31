@@ -6,11 +6,9 @@
     :errorMessage="errorMessage"
     ref="popup">
     <div class="memo-editor">
-      <div class="memo-edit-content">
-        <textarea v-model="memo.title" />
-        <textarea v-model="memo.content" rows="5" />
-        <button @click="saveMemo">Save</button>
-      </div>
+      <textarea v-model="memo.title" />
+      <textarea v-model="memo.content" rows="5" />
+      <button @click="saveMemo">Save</button>
     </div>
   </Popup>
 </template>
@@ -48,7 +46,7 @@ onMounted(() => {
 });
 
 const setCreateMemo = () => {
-  memo.value = { id: -1, title: 'New Memo', content: '', user_id: 1 };
+  memo.value = { id: -1, title: 'Create Memo', content: '', user_id: 1 };
   contentTitle.value = memo.value.title;
 };
 

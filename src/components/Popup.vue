@@ -81,7 +81,7 @@ defineExpose({
 .popup-content {
   position: relative;
   background-color: white;
-  padding: 20px;
+  padding: 30px 20px 20px 10px;
   border-radius: 8px;
 }
 
@@ -100,16 +100,17 @@ defineExpose({
 
 .close-button {
   position: absolute;
-  top: 10px;
+  top: 0px;
   right: 10px;
-  font-size: 20px;
+  font-size: 30px;
   color: black;
   background-color: transparent;
   padding: 0;
   margin: 0;
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   border: none;
+  font-weight: bold;
 }
 
 .close-button:hover {

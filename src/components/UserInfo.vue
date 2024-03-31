@@ -1,5 +1,7 @@
 <template>
-  <Popup :contentTitle="user?.name" :errorMessage="errorMessage">
+  <Popup 
+    :contentTitle="user?.name" 
+    :errorMessage="errorMessage">
     <div class="user-info">
       <h2>User Info</h2>
       <p>Name: {{ user?.name }}</p>
