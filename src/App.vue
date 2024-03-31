@@ -7,6 +7,13 @@
         <li><router-link to="/user-list">User List</router-link></li>
       </ul>
     </nav>
+    <select v-model="curentUser">
+      <option v-for="user in userList" 
+        :key="user.id" 
+        :value="user">
+        {{ user.name }}
+      </option>
+    </select>
   </header>
   <main>
     <router-view />
@@ -15,6 +22,35 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, watch } from 'vue';
+import { useStore } from 'vuex';
+import { User } from '@/generated';
+import { usersHandler } from '@/api/handler';
+
+const userList = ref([] as Array<User>);
+const curentUser = ref({} as User);
+const store = useStore();
+
+onMounted(async () => {
+  try {
+    await getUserList();
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+const getUserList = async () => {
+  try {
+    const response = await usersHandler.getUserList();
+    userList.value = response.data as Array<User>;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+watch(curentUser, () => {
+  store.commit('setCurrentUserId', curentUser.value.id);
+});
 </script>
 
 <style>
@@ -65,6 +101,13 @@ footer {
   width: 100%;
   height: 50px;
   padding: 10px;
+}
+
+select {
+  height: fit-content;
+  background-color: #3a727e;
+  color: #fff;
+  font-size: 1.2rem;
 }
 
 button {

@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import { ref, defineProps, toRefs, onMounted } from 'vue';
+import { useStore } from 'vuex';
 import { Memo, MemoListInner } from '@/generated';
 import { memoHandler } from '@/api/handler';
 import Popup from './Popup.vue';
@@ -22,6 +23,7 @@ import Popup from './Popup.vue';
 const errorMessage = ref('');
 const contentTitle = ref('');
 const popup = ref<null | { closePopup: () => null }>(null);
+const store = useStore();
 
 const props = defineProps({
   memoListInner: {
@@ -29,7 +31,7 @@ const props = defineProps({
   },
   updateList: {
     type: Function,
-    default: null
+    default: () => null
   }
 });
 const { memoListInner, updateList } = toRefs(props);
@@ -40,13 +42,13 @@ onMounted(() => {
   if (!memoListInner?.value) {
     setCreateMemo();
   } else {
-    memo.value = { ...memoListInner.value, content: '', user_id: 0 };
+    memo.value = { ...memoListInner.value, content: '', user_id: -1 };
     contentTitle.value = memo.value.title;
   }
 });
 
 const setCreateMemo = () => {
-  memo.value = { id: -1, title: 'Create Memo', content: '', user_id: 1 };
+  memo.value = { id: -1, title: 'Create Memo', content: '', user_id: -1 };
   contentTitle.value = memo.value.title;
 };
 
@@ -63,6 +65,7 @@ const onPopupOpen = async () => {
 };
 
 const saveMemo = async () => {
+  memo.value.user_id = store.state.currentUserId;
   try {
     if (memo.value.id === -1) {
       const response = await memoHandler.createMemo(memo.value);
