@@ -34,6 +34,7 @@ const store = useStore();
 onMounted(async () => {
   try {
     await getUserList();
+    curentUser.value = userList.value[0];
   } catch (error) {
     console.error(error);
   }
