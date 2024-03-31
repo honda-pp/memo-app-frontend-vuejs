@@ -1,5 +1,5 @@
 <template>
-  <div @click="openPopup" class="popup-title">{{ contentTitle }}</div>
+  <div @click="openPopup" class="popup-title" :class="{'button': buttonFlg}">{{ contentTitle }}</div>
   <div v-if="isPopupOpen" class="popup-overlay" @click="closePopup">
     <div class="popup-content" @click.stop>
       <button @click="closePopup" class="close-button">&times;</button>
@@ -10,25 +10,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, toRefs, onMounted, onUnmounted } from 'vue';
+import { ref, defineProps, toRefs, onMounted, onUnmounted, defineExpose } from 'vue';
 
 const isPopupOpen = ref(false);
 const props = defineProps({
-  contentTitle: String,
-  errorMessage: String,
-  onPopupOpen: Function,
-  onPopupClose: Function
+  contentTitle: {
+    type: String
+  },
+  buttonFlg: {
+    type: Boolean
+  },
+  errorMessage: {
+    type: String
+  },
+  onPopupOpen: {
+    type: Function,
+    default: null
+  },
+  onPopupClose: {
+    type: Function,
+    default: null
+  }
 });
-const { contentTitle, errorMessage, onPopupOpen, onPopupClose } = toRefs(props);
+const { contentTitle, buttonFlg, errorMessage, onPopupOpen, onPopupClose } = toRefs(props);
 
-function openPopup() {
+const openPopup = () => {
   isPopupOpen.value = true;
-  onPopupOpen?.value && onPopupOpen.value();
+  onPopupOpen.value();
 }
 
-function closePopup() {
+const closePopup = () => {
   isPopupOpen.value = false;
-  onPopupClose?.value && onPopupClose.value();
+  onPopupClose.value();
 }
 
 onMounted(() => {
@@ -39,11 +52,16 @@ onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown);
 });
 
-function handleKeydown(event: { key: string; }) {
+const handleKeydown = (event: { key: string; }) => {
   if (event.key === 'Escape') {
     closePopup();
   }
 }
+
+defineExpose({
+  openPopup,
+  closePopup
+});
 </script>
 
 <style scoped>
@@ -63,7 +81,7 @@ function handleKeydown(event: { key: string; }) {
 .popup-content {
   position: relative;
   background-color: white;
-  padding: 20px;
+  padding: 30px 20px 20px 10px;
   border-radius: 8px;
 }
 
@@ -74,18 +92,25 @@ function handleKeydown(event: { key: string; }) {
   padding: 5px;
 }
 
+.button {
+  background-color: #007bff;
+  color: white;
+  width: fit-content;
+}
+
 .close-button {
   position: absolute;
-  top: 10px;
+  top: 0px;
   right: 10px;
-  font-size: 20px;
+  font-size: 30px;
   color: black;
   background-color: transparent;
   padding: 0;
   margin: 0;
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   border: none;
+  font-weight: bold;
 }
 
 .close-button:hover {
