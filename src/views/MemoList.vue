@@ -9,12 +9,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import { useStore } from 'vuex'
 import { MemoListInner } from '@/generated';
 import { memoHandler } from '@/api/handler';
 import MemoEditor from '@/components/MemoEditor.vue';
 
 const memoList = ref([] as Array<MemoListInner>);
+const store = useStore();
 
 onMounted(async () => {
   try {
@@ -22,6 +24,11 @@ onMounted(async () => {
   } catch (error) {
     console.error(error);
   }
+});
+
+watch(() => store.state.currentUserId, (newUserId, oldUserId) => {
+  console.log(`currentUserId changed from ${oldUserId} to ${newUserId}`);
+  
 });
 
 const getMemoList = async () => {

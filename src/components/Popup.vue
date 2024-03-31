@@ -25,11 +25,11 @@ const props = defineProps({
   },
   onPopupOpen: {
     type: Function,
-    default: null
+    default: () => null
   },
   onPopupClose: {
     type: Function,
-    default: null
+    default: () => null
   }
 });
 const { contentTitle, buttonFlg, errorMessage, onPopupOpen, onPopupClose } = toRefs(props);
