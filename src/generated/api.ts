@@ -26,6 +26,19 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
+ * @interface GetMemoListRequest
+ */
+export interface GetMemoListRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetMemoListRequest
+     */
+    'user_id'?: number;
+}
+/**
+ * 
+ * @export
  * @interface Memo
  */
 export interface Memo {
@@ -231,10 +244,11 @@ export const MemoHandlerAxiosParamCreator = function (configuration?: Configurat
         /**
          * Optional extended description in Markdown.
          * @summary Returns a list of memos.
+         * @param {GetMemoListRequest} [getMemoListRequest] get current user\&#39;s memo list.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMemoList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMemoList: async (getMemoListRequest?: GetMemoListRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/memo-list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -249,9 +263,12 @@ export const MemoHandlerAxiosParamCreator = function (configuration?: Configurat
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getMemoListRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -350,11 +367,12 @@ export const MemoHandlerFp = function(configuration?: Configuration) {
         /**
          * Optional extended description in Markdown.
          * @summary Returns a list of memos.
+         * @param {GetMemoListRequest} [getMemoListRequest] get current user\&#39;s memo list.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMemoList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MemoListInner>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getMemoList(options);
+        async getMemoList(getMemoListRequest?: GetMemoListRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MemoListInner>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMemoList(getMemoListRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MemoHandler.getMemoList']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -416,11 +434,12 @@ export const MemoHandlerFactory = function (configuration?: Configuration, baseP
         /**
          * Optional extended description in Markdown.
          * @summary Returns a list of memos.
+         * @param {GetMemoListRequest} [getMemoListRequest] get current user\&#39;s memo list.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMemoList(options?: any): AxiosPromise<Array<MemoListInner>> {
-            return localVarFp.getMemoList(options).then((request) => request(axios, basePath));
+        getMemoList(getMemoListRequest?: GetMemoListRequest, options?: any): AxiosPromise<Array<MemoListInner>> {
+            return localVarFp.getMemoList(getMemoListRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Update an existing memo.
@@ -482,12 +501,13 @@ export class MemoHandler extends BaseAPI {
     /**
      * Optional extended description in Markdown.
      * @summary Returns a list of memos.
+     * @param {GetMemoListRequest} [getMemoListRequest] get current user\&#39;s memo list.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MemoHandler
      */
-    public getMemoList(options?: RawAxiosRequestConfig) {
-        return MemoHandlerFp(this.configuration).getMemoList(options).then((request) => request(this.axios, this.basePath));
+    public getMemoList(getMemoListRequest?: GetMemoListRequest, options?: RawAxiosRequestConfig) {
+        return MemoHandlerFp(this.configuration).getMemoList(getMemoListRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
